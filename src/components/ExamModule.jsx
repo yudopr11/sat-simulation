@@ -26,9 +26,10 @@ export default function ExamModule({
   onAnswer,
   onFreeze,
   devMode,
+  initialTimeLeft,
 }) {
   const duration = devMode ? DEV_DURATION : FULL_DURATION
-  const [timeLeft, setTimeLeft] = useState(duration)
+  const [timeLeft, setTimeLeft] = useState(() => initialTimeLeft ?? duration)
   const [activeIndex, setActiveIndex] = useState(0)
   const intervalRef = useRef(null)
   const frozenRef = useRef(frozen)

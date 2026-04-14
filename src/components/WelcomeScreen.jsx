@@ -7,7 +7,7 @@ export default function WelcomeScreen({ onStart }) {
         {/* Header */}
         <div className="text-center mb-8">
           <div className="inline-block bg-blue-800 text-white text-xs font-bold tracking-widest uppercase px-4 py-1.5 rounded-full mb-4">
-            Practice Test 11
+            Practice Test
           </div>
           <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
             SAT Math Section
@@ -71,7 +71,7 @@ export default function WelcomeScreen({ onStart }) {
             </li>
             <li className="flex gap-2">
               <span className="text-blue-600 font-bold flex-shrink-0">•</span>
-              Do not reload or refresh this page because it will reset your progress.
+              Do not close the browser because it will reset your progress.
             </li>
           </ul>
         </div>

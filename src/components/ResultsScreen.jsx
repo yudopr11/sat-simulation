@@ -129,6 +129,7 @@ export default function ResultsScreen({
   module2Questions,
   module1Answers,
   module2Answers,
+  onReset,
 }) {
   const m1Results = gradeModule(module1Questions, module1Answers)
   const m2Results = gradeModule(module2Questions, module2Answers)
@@ -142,6 +143,16 @@ export default function ResultsScreen({
   return (
     <div className="min-h-screen bg-gray-50 pb-16">
       <div className="max-w-3xl mx-auto px-4 py-8">
+        {/* Repeat button */}
+        <div className="flex justify-end mb-4">
+          <button
+            onClick={onReset}
+            className="flex items-center gap-2 bg-white border-2 border-gray-300 hover:border-blue-500 hover:text-blue-700 text-gray-700 font-semibold text-sm px-4 py-2 rounded-lg transition-colors"
+          >
+            ↺ Repeat Test
+          </button>
+        </div>
+
         {/* Score banner */}
         <div className="bg-blue-800 text-white rounded-2xl p-6 mb-8 shadow-lg text-center">
           <div className="text-sm font-bold uppercase tracking-widest opacity-80 mb-1">
