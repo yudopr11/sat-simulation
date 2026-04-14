@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import MathText from './MathText'
 import { gradeModule } from '../utils/validation'
+import { getMathScoreRange, formatScoreRange } from '../utils/scoring'
 
 function StatusIcon({ status }) {
   if (status === 'correct') return <span className="text-green-600 font-bold text-lg">✓</span>
@@ -139,6 +140,7 @@ export default function ResultsScreen({
   const totalQuestions = module1Questions.length + module2Questions.length
 
   const pct = Math.round((totalCorrect / totalQuestions) * 100)
+  const scoreRange = formatScoreRange(getMathScoreRange(totalCorrect))
 
   return (
     <div className="min-h-screen bg-gray-50 pb-16">
@@ -162,7 +164,11 @@ export default function ResultsScreen({
             {totalCorrect}
             <span className="text-2xl font-bold opacity-70">/{totalQuestions}</span>
           </div>
-          <div className="text-2xl font-bold opacity-90 mb-3">{pct}%</div>
+          <div className="flex items-center justify-center gap-3 mb-3">
+            <span className="text-2xl font-bold">{scoreRange}</span>
+            <span className="opacity-40 font-bold">|</span>
+            <span className="text-2xl font-bold opacity-90">{pct}%</span>
+          </div>
           <div className="flex justify-center gap-6 text-sm opacity-80">
             <span>Module 1: {m1Results.filter((r) => r.status === 'correct').length}/27</span>
             <span>Module 2: {m2Results.filter((r) => r.status === 'correct').length}/27</span>

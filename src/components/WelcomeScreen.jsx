@@ -67,11 +67,7 @@ export default function WelcomeScreen({ onStart }) {
             </li>
             <li className="flex gap-2">
               <span className="text-blue-600 font-bold flex-shrink-0">•</span>
-              Use of a calculator is permitted for all questions.
-            </li>
-            <li className="flex gap-2">
-              <span className="text-blue-600 font-bold flex-shrink-0">•</span>
-              Do not close the browser because it will reset your progress.
+              <span>Use of a calculator is permitted for all questions (Recommended using <a href="https://www.desmos.com/calculator" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">Desmos)</a>.</span>
             </li>
           </ul>
         </div>

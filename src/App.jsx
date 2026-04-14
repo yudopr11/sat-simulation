@@ -138,7 +138,7 @@ export default function App() {
       )
 
     case 'transition':
-      return <TransitionScreen onContinue={() => dispatch({ type: 'START_MODULE2' })} />
+      return <TransitionScreen onContinue={() => dispatch({ type: 'START_MODULE2' })} onReset={() => dispatch({ type: 'RESET' })} />
 
     case 'module2':
       return (
