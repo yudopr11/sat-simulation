@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 const COUNTDOWN = 5 // seconds before "Begin Module 2" button enables
 
-export default function TransitionScreen({ onContinue, onReset }) {
+export default function TransitionScreen({ onContinue }) {
   const [countdown, setCountdown] = useState(COUNTDOWN)
 
   useEffect(() => {
@@ -66,14 +66,6 @@ export default function TransitionScreen({ onContinue, onReset }) {
           </p>
         )}
 
-        <div className="mt-6">
-          <button
-            onClick={onReset}
-            className="flex items-center gap-2 mx-auto border-2 border-gray-300 hover:border-blue-500 hover:text-blue-700 text-gray-700 font-semibold text-sm px-4 py-2 rounded-lg transition-colors"
-          >
-            ↺ Repeat Test
-          </button>
-        </div>
       </div>
     </div>
   )

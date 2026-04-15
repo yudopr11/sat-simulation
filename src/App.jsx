@@ -7,7 +7,7 @@ import TransitionScreen from './components/TransitionScreen'
 import ResultsScreen from './components/ResultsScreen'
 
 const STORAGE_KEY = 'sat_progress'
-const SESSION_MAX_MS = 70 * 60 * 1000 // 70 minutes
+const SESSION_MAX_MS = 80 * 60 * 1000 // 80 minutes
 const FULL_DURATION = 2100 // 35 min in seconds
 const DEV_DURATION = 60
 
@@ -138,7 +138,7 @@ export default function App() {
       )
 
     case 'transition':
-      return <TransitionScreen onContinue={() => dispatch({ type: 'START_MODULE2' })} onReset={() => dispatch({ type: 'RESET' })} />
+      return <TransitionScreen onContinue={() => dispatch({ type: 'START_MODULE2' })} />
 
     case 'module2':
       return (
