@@ -31,6 +31,7 @@ export default function ExamModule({
   const duration = devMode ? DEV_DURATION : FULL_DURATION
   const [timeLeft, setTimeLeft] = useState(() => initialTimeLeft ?? duration)
   const [activeIndex, setActiveIndex] = useState(0)
+  const [showRef, setShowRef] = useState(false)
   const intervalRef = useRef(null)
   const frozenRef = useRef(frozen)
 
@@ -88,7 +89,15 @@ export default function ExamModule({
               {answeredCount}/{questions.length} answered
             </span>
           </div>
-          <TimerBar timeLeft={timeLeft} totalTime={duration} />
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setShowRef(true)}
+              className="flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded border border-gray-300 text-gray-600 hover:bg-gray-100 transition-colors"
+            >
+              📐 Reference
+            </button>
+            <TimerBar timeLeft={timeLeft} totalTime={duration} />
+          </div>
         </div>
 
         {/* Question navigation */}
@@ -139,6 +148,37 @@ export default function ExamModule({
           </div>
         </div>
       </div>
+
+      {/* Reference sheet modal */}
+      {showRef && (
+        <div
+          className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4"
+          onClick={() => setShowRef(false)}
+        >
+          <div
+            className="relative bg-white rounded-xl overflow-hidden shadow-2xl max-w-3xl w-full max-h-[90vh] flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200">
+              <span className="font-bold text-gray-800 text-sm uppercase tracking-wide">Reference Sheet</span>
+              <button
+                onClick={() => setShowRef(false)}
+                className="text-gray-500 hover:text-gray-800 text-xl font-bold leading-none"
+                aria-label="Close reference sheet"
+              >
+                ✕
+              </button>
+            </div>
+            <div className="overflow-y-auto">
+              <img
+                src="/reference.jpeg"
+                alt="SAT Math Reference Sheet"
+                className="w-full h-auto"
+              />
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Dev mode watermark */}
       {devMode && (

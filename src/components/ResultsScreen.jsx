@@ -141,6 +141,7 @@ export default function ResultsScreen({
 
   const pct = Math.round((totalCorrect / totalQuestions) * 100)
   const scoreRange = formatScoreRange(getMathScoreRange(totalCorrect))
+  const [showAnswerKey, setShowAnswerKey] = useState(false)
 
   return (
     <div className="min-h-screen bg-gray-50 pb-16">
@@ -175,20 +176,49 @@ export default function ResultsScreen({
           </div>
         </div>
 
-        {/* Answer key link */}
+        {/* Answer key */}
         <div className="bg-amber-50 border border-amber-300 rounded-xl px-5 py-3 mb-8 flex items-center justify-between flex-wrap gap-3">
           <span className="text-amber-800 text-sm font-medium">
             View the official answer key for reference
           </span>
-          <a
-            href="/answer_key.jpeg"
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            onClick={() => setShowAnswerKey(true)}
             className="bg-amber-500 hover:bg-amber-600 text-white text-sm font-bold px-4 py-2 rounded-lg transition-colors"
           >
             Open Answer Key
-          </a>
+          </button>
         </div>
+
+        {/* Answer key modal */}
+        {showAnswerKey && (
+          <div
+            className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4"
+            onClick={() => setShowAnswerKey(false)}
+          >
+            <div
+              className="relative bg-white rounded-xl overflow-hidden shadow-2xl w-full max-w-3xl max-h-[90vh] flex flex-col"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 flex-shrink-0">
+                <span className="font-bold text-gray-800 text-sm uppercase tracking-wide">Answer Key</span>
+                <button
+                  onClick={() => setShowAnswerKey(false)}
+                  className="text-gray-500 hover:text-gray-800 text-xl font-bold leading-none"
+                  aria-label="Close answer key"
+                >
+                  ✕
+                </button>
+              </div>
+              <div className="overflow-y-auto">
+                <img
+                  src="/answer_key.jpeg"
+                  alt="Answer Key"
+                  className="w-full h-auto"
+                />
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Detailed results */}
         <ModuleResults
