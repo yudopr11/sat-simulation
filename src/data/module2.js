@@ -386,7 +386,7 @@ export const module2Questions = [
       { label: 'C', text: 'I and II' },
       { label: 'D', text: 'Neither I nor II' },
     ],
-    answer: 'A',
+    answer: 'B',
     acceptedAnswers: null,
     hasFigure: true,
     figurePagePdf: 9,
