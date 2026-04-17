@@ -126,6 +126,7 @@ function ModuleResults({ moduleNum, questions, answers }) {
 }
 
 export default function ResultsScreen({
+  setId,
   module1Questions,
   module2Questions,
   module1Answers,
@@ -211,7 +212,7 @@ export default function ResultsScreen({
               </div>
               <div className="overflow-y-auto">
                 <img
-                  src="/answer_key.jpeg"
+                  src={`/${setId}/answer_key_${setId}.jpeg`}
                   alt="Answer Key"
                   className="w-full h-auto"
                 />

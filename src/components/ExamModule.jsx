@@ -20,6 +20,7 @@ const DEV_DURATION = 360   // 1 minute for dev/testing mode
  */
 export default function ExamModule({
   moduleNumber,
+  setId,
   questions,
   answers,
   frozen,
@@ -119,7 +120,7 @@ export default function ExamModule({
             frozen={frozen}
             questionNumber={activeIndex + 1}
             total={questions.length}
-            pdfFile={`module_${moduleNumber}.pdf`}
+            pdfFile={`${setId}/module_${moduleNumber}_${setId}.pdf`}
           />
 
           {/* Previous / Next navigation */}

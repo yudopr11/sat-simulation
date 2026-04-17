@@ -1,19 +1,22 @@
 import React, { useReducer, useCallback, useMemo, useEffect } from 'react'
-import { module1Questions } from './data/module1'
-import { module2Questions } from './data/module2'
+import { module1Questions as m1_10 } from './data/10/module1'
+import { module2Questions as m2_10 } from './data/10/module2'
+import { module1Questions as m1_11 } from './data/11/module1'
+import { module2Questions as m2_11 } from './data/11/module2'
 import WelcomeScreen from './components/WelcomeScreen'
 import ExamModule from './components/ExamModule'
 import TransitionScreen from './components/TransitionScreen'
 import ResultsScreen from './components/ResultsScreen'
 
-const STORAGE_KEY = 'sat_progress'
-const SESSION_MAX_MS = 80 * 60 * 1000 // 80 minutes
-const FULL_DURATION = 2100 // 35 min in seconds
-const DEV_DURATION = 60
+const SETS = {
+  10: { module1: m1_10, module2: m2_10 },
+  11: { module1: m1_11, module2: m2_11 },
+}
 
-// ─── Session persistence ───────────────────────────────────────────────────
-// localStorage survives tab close, new tabs, and browser restarts.
-// Progress is discarded only when the 70-minute TTL has elapsed.
+const STORAGE_KEY = 'sat_progress'
+const SESSION_MAX_MS = 80 * 60 * 1000
+const FULL_DURATION = 2100
+const DEV_DURATION = 60
 
 function loadSession() {
   try {
@@ -37,17 +40,16 @@ function saveSession(data) {
   } catch {}
 }
 
-// ─── State ────────────────────────────────────────────────────────────────
-
 const baseInitialState = {
-  phase: 'welcome', // 'welcome' | 'module1' | 'transition' | 'module2' | 'results'
+  phase: 'welcome',
+  selectedSet: null,
   module1Answers: Array(27).fill(null),
   module2Answers: Array(27).fill(null),
   module1Frozen: false,
   module2Frozen: false,
-  sessionStart: null,     // ms timestamp — when the exam session began
-  module1StartedAt: null, // ms timestamp — when Module 1 timer started
-  module2StartedAt: null, // ms timestamp — when Module 2 timer started
+  sessionStart: null,
+  module1StartedAt: null,
+  module2StartedAt: null,
 }
 
 function getInitialState() {
@@ -61,6 +63,7 @@ function reducer(state, action) {
       return {
         ...state,
         phase: 'module1',
+        selectedSet: action.setId,
         sessionStart: state.sessionStart ?? Date.now(),
         module1StartedAt: Date.now(),
       }
@@ -90,8 +93,6 @@ function reducer(state, action) {
   }
 }
 
-// ─── App ──────────────────────────────────────────────────────────────────
-
 export default function App() {
   const [state, dispatch] = useReducer(reducer, null, getInitialState)
   const devMode = useMemo(
@@ -100,7 +101,6 @@ export default function App() {
   )
   const duration = devMode ? DEV_DURATION : FULL_DURATION
 
-  // Persist every state change to sessionStorage (skip welcome — nothing to save yet)
   useEffect(() => {
     if (state.phase !== 'welcome') {
       saveSession(state)
@@ -110,24 +110,30 @@ export default function App() {
   const handleFreezeModule1 = useCallback(() => dispatch({ type: 'FREEZE_MODULE1' }), [])
   const handleFreezeModule2 = useCallback(() => dispatch({ type: 'FREEZE_MODULE2' }), [])
 
-  // Compute remaining seconds for each module, accounting for time elapsed since startedAt.
-  // If the stored startedAt shows time has fully run out, initialTimeLeft will be 0,
-  // which causes ExamModule to freeze on its first timer tick.
   function calcTimeLeft(startedAt) {
     if (!startedAt) return duration
     return Math.max(0, duration - Math.floor((Date.now() - startedAt) / 1000))
   }
 
+  const setId = state.selectedSet
+  const questions = setId ? SETS[setId] : null
+
   switch (state.phase) {
     case 'welcome':
-      return <WelcomeScreen onStart={() => dispatch({ type: 'START_MODULE1' })} />
+      return (
+        <WelcomeScreen
+          availableSets={Object.keys(SETS).map(Number)}
+          onStart={(id) => dispatch({ type: 'START_MODULE1', setId: id })}
+        />
+      )
 
     case 'module1':
       return (
         <ExamModule
           key="module1"
           moduleNumber={1}
-          questions={module1Questions}
+          setId={setId}
+          questions={questions.module1}
           answers={state.module1Answers}
           frozen={state.module1Frozen}
           onAnswer={(i, v) => dispatch({ type: 'SET_M1_ANSWER', index: i, value: v })}
@@ -145,7 +151,8 @@ export default function App() {
         <ExamModule
           key="module2"
           moduleNumber={2}
-          questions={module2Questions}
+          setId={setId}
+          questions={questions.module2}
           answers={state.module2Answers}
           frozen={state.module2Frozen}
           onAnswer={(i, v) => dispatch({ type: 'SET_M2_ANSWER', index: i, value: v })}
@@ -158,8 +165,9 @@ export default function App() {
     case 'results':
       return (
         <ResultsScreen
-          module1Questions={module1Questions}
-          module2Questions={module2Questions}
+          setId={setId}
+          module1Questions={questions.module1}
+          module2Questions={questions.module2}
           module1Answers={state.module1Answers}
           module2Answers={state.module2Answers}
           onReset={() => dispatch({ type: 'RESET' })}

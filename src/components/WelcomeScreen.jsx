@@ -1,6 +1,8 @@
-import React from 'react'
+import { useState } from 'react'
 
-export default function WelcomeScreen({ onStart }) {
+export default function WelcomeScreen({ availableSets, onStart }) {
+  const [selectedSet, setSelectedSet] = useState(null)
+
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
       <div className="max-w-2xl w-full">
@@ -33,6 +35,26 @@ export default function WelcomeScreen({ onStart }) {
               <div className="text-base font-bold text-gray-800 mt-0.5">{value}</div>
             </div>
           ))}
+        </div>
+
+        {/* Set selector */}
+        <div className="bg-white rounded-xl border border-gray-200 p-6 mb-6 shadow-sm">
+          <h2 className="font-bold text-gray-800 mb-3 text-base">Select Test Set</h2>
+          <div className="flex flex-wrap gap-3">
+            {availableSets.map((id) => (
+              <button
+                key={id}
+                onClick={() => setSelectedSet(id)}
+                className={`px-5 py-2.5 rounded-lg border-2 font-bold text-sm transition-colors duration-100
+                  ${selectedSet === id
+                    ? 'bg-blue-700 border-blue-700 text-white'
+                    : 'bg-white border-gray-300 text-gray-700 hover:border-blue-400 hover:text-blue-700'
+                  }`}
+              >
+                Set {id}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Instructions */}
@@ -75,14 +97,12 @@ export default function WelcomeScreen({ onStart }) {
         {/* Start button */}
         <div className="text-center">
           <button
-            onClick={onStart}
-            className="bg-blue-700 hover:bg-blue-800 active:bg-blue-900 text-white font-bold text-lg px-10 py-3.5 rounded-xl shadow-md transition-colors duration-150"
+            onClick={() => onStart(selectedSet)}
+            disabled={selectedSet === null}
+            className="bg-blue-700 hover:bg-blue-800 active:bg-blue-900 text-white font-bold text-lg px-10 py-3.5 rounded-xl shadow-md transition-colors duration-150 disabled:opacity-40 disabled:cursor-not-allowed"
           >
             Begin Module 1
           </button>
-          {/* <p className="text-xs text-gray-400 mt-3">
-            Add <code>?dev=1</code> to the URL for 60-second timers (testing mode)
-          </p> */}
         </div>
       </div>
     </div>
