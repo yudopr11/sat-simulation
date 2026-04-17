@@ -72,12 +72,23 @@ function MCChoices({ choices, selected, onSelect, frozen }) {
 
 /** Free-response text input */
 function FRInput({ value, onChange, frozen }) {
+  const handleChange = (e) => {
+    if (frozen) return
+    const filtered = e.target.value.replace(/[^0-9./]/g, '')
+    onChange(filtered)
+  }
+
+  const handleKeyDown = (e) => {
+    if (!/[0-9./]/.test(e.key) && e.key.length === 1) e.preventDefault()
+  }
+
   return (
     <div className="mt-5">
       <input
         type="text"
         value={value}
-        onChange={(e) => !frozen && onChange(e.target.value)}
+        onChange={handleChange}
+        onKeyDown={handleKeyDown}
         readOnly={frozen}
         maxLength={20}
         placeholder="Enter your answer"
