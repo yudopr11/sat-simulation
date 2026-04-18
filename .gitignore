@@ -27,3 +27,11 @@ npm-debug.log*
 .DS_Store
 Thumbs.db
 .claude/
+public/reference.jpeg:Zone.Identifier
+public/10/answer_key_10.jpeg:Zone.Identifier
+public/10/module_1_10.pdf:Zone.Identifier
+.gitignore
+public/10/module_2_10.pdf:Zone.Identifier
+public/11/answer_key_11.jpeg:Zone.Identifier
+public/11/module_1_11.pdf:Zone.Identifier
+public/11/module_2_11.pdf:Zone.Identifier
