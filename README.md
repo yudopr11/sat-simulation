@@ -219,12 +219,26 @@ The navigation bar adapts automatically to `questions.length` — no other chang
 ```
 sat-simulation/
 ├── public/
-│   ├── sat-practice-test-11-digital-32-51.pdf   ← figures PDF
-│   └── answer_key.jpeg                          ← answer key image
+│   ├── 10/
+│   │   ├── module_1_10.pdf       ← Practice Test 10 Module 1 figures
+│   │   ├── module_2_10.pdf       ← Practice Test 10 Module 2 figures
+│   │   └── answer_key_10.jpeg    ← Practice Test 10 answer key
+│   ├── 11/
+│   │   ├── module_1_11.pdf       ← Practice Test 11 Module 1 figures
+│   │   ├── module_2_11.pdf       ← Practice Test 11 Module 2 figures
+│   │   └── answer_key_11.jpeg    ← Practice Test 11 answer key
+│   ├── reference.jpeg            ← math reference sheet
+│   └── favicon.svg               ← browser tab icon
+├── index.html
 └── src/
+    ├── components/               ← React UI components
     ├── data/
-    │   ├── module1.js    ← edit Module 1 questions here
-    │   └── module2.js    ← edit Module 2 questions here
+    │   ├── 10/
+    │   │   ├── module1.js        ← Practice Test 10 Module 1 questions
+    │   │   └── module2.js        ← Practice Test 10 Module 2 questions
+    │   └── 11/
+    │       ├── module1.js        ← Practice Test 11 Module 1 questions
+    │       └── module2.js        ← Practice Test 11 Module 2 questions
     └── utils/
-        └── validation.js ← grading logic (raw string comparison)
+        └── validation.js         ← grading logic (raw string comparison)
 ```

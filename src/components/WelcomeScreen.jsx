@@ -7,7 +7,7 @@ export default function WelcomeScreen({ availableSets, onStart }) {
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
       <div className="max-w-2xl w-full">
         {/* Header */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-8 mt-8">
           <div className="inline-block bg-blue-800 text-white text-xs font-bold tracking-widest uppercase px-4 py-1.5 rounded-full mb-4">
             Practice Test
           </div>
@@ -95,7 +95,7 @@ export default function WelcomeScreen({ availableSets, onStart }) {
         </div>
 
         {/* Start button */}
-        <div className="text-center">
+        <div className="text-center mb-8">
           <button
             onClick={() => onStart(selectedSet)}
             disabled={selectedSet === null}
