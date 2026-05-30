@@ -1,15 +1,22 @@
-# SAT Math Simulation — Editing Guide
+# SAT Math Simulation
 
-This app simulates the SAT Math section (Practice Test 11, Digital Format).  
-All question and answer data live in two plain JavaScript files that you can edit directly.
+SAT Math section simulator with timed modules, automatic grading, and score reports. Supports Practice Tests 10 and 11 (Digital Format).
 
----
+## Stack
+
+- **Framework**: React 18 + Vite
+- **CSS**: Tailwind CSS v4
+- **Math**: KaTeX for LaTeX rendering
+- **State**: `useReducer` with localStorage session persistence (80-min expiry)
+- **Testing**: Vitest
 
 ## Running the App
 
 ```bash
 npm install      # first time only
 npm run dev      # starts dev server at http://localhost:5173
+npm test         # run tests
+npm run build    # production build
 ```
 
 **Dev mode** (60-second timers for quick testing):
@@ -22,10 +29,12 @@ http://localhost:5173/?dev=1
 
 ## Where to Edit Questions and Answers
 
-| Module | File |
-|--------|------|
-| Module 1 | `src/data/module1.js` |
-| Module 2 | `src/data/module2.js` |
+| Test Set | Module | File |
+|----------|--------|------|
+| 10 | Module 1 | `src/data/10/module1.js` |
+| 10 | Module 2 | `src/data/10/module2.js` |
+| 11 | Module 1 | `src/data/11/module1.js` |
+| 11 | Module 2 | `src/data/11/module2.js` |
 
 Each file exports an array of 27 question objects.
 
@@ -57,7 +66,7 @@ Each file exports an array of 27 question objects.
 
 ## Writing Math with LaTeX
 
-Question text and choice text support LaTeX via **KaTeX**.  
+Question text and choice text support LaTeX via **KaTeX**.
 Wrap math expressions in dollar-sign delimiters:
 
 | Syntax | Renders as | Use for |
@@ -133,7 +142,7 @@ Set `type: 'mc'`, provide all four choices, and set `answer` to the correct lett
 
 Set `type: 'fr'`, set `choices: null` and `answer: null`, and provide `acceptedAnswers` as an **array of strings**.
 
-Grading uses **exact string matching** (case-insensitive, whitespace trimmed).  
+Grading uses **exact string matching** (case-insensitive, whitespace trimmed).
 If multiple forms are valid (e.g. both decimal and fraction), include all of them.
 
 ```js
@@ -165,7 +174,7 @@ acceptedAnswers: ['41/81', '.5061', '.5062', '0.5061', '0.5062']  // many forms
 
 ## Figure Questions
 
-Some questions refer to a diagram in the PDF.  
+Some questions refer to a diagram in the PDF.
 Set `hasFigure: true` and `figurePagePdf` to the correct PDF page number.
 
 ```js
@@ -176,12 +185,13 @@ Set `hasFigure: true` and `figurePagePdf` to the correct PDF page number.
   // ...
   hasFigure: true,
   figurePagePdf: 3,          // opens the PDF at page 3
-  figureLabel: 'Figure 1',  // text shown on the button (optional)
+  figureLabel: 'Figure 1',   // text shown on the button (optional)
 }
 ```
 
-The PDF file must be at `public/sat-practice-test-11-digital-32-51.pdf`.  
-Clicking "View Figure" opens the PDF at the specified page in a new browser tab.
+PDF files are per test set:
+- `public/10/module_1_10.pdf`, `public/10/module_2_10.pdf`
+- `public/11/module_1_11.pdf`, `public/11/module_2_11.pdf`
 
 ---
 
@@ -207,10 +217,7 @@ Headers and cell values support LaTeX the same as question text.
 
 ## Adding or Removing Questions
 
-The navigation bar adapts automatically to `questions.length` — no other changes needed.
-
-- The score display assumes 27 questions per module (shown as `/27` and `/54`).  
-  If you change the count, also update those hardcoded labels in `src/components/ResultsScreen.jsx` (line 156–157).
+The navigation bar and question count adapt automatically to `questions.length` — no hardcoded values to update.
 
 ---
 
@@ -231,7 +238,17 @@ sat-simulation/
 │   └── favicon.svg               ← browser tab icon
 ├── index.html
 └── src/
-    ├── components/               ← React UI components
+    ├── App.jsx                   ← root component, state machine (useReducer)
+    ├── components/
+    │   ├── ExamModule.jsx        ← main exam screen (timer + nav + questions)
+    │   ├── FigureLink.jsx        ← PDF figure modal
+    │   ├── MathText.jsx          ← KaTeX renderer
+    │   ├── QuestionNav.jsx       ← question number grid
+    │   ├── QuestionRenderer.jsx  ← question display + answer input
+    │   ├── ResultsScreen.jsx     ← score report + review
+    │   ├── TimerBar.jsx          ← countdown timer
+    │   ├── TransitionScreen.jsx  ← module 1→2 interstitial
+    │   └── WelcomeScreen.jsx     ← landing page + test set selector
     ├── data/
     │   ├── 10/
     │   │   ├── module1.js        ← Practice Test 10 Module 1 questions
@@ -240,5 +257,13 @@ sat-simulation/
     │       ├── module1.js        ← Practice Test 11 Module 1 questions
     │       └── module2.js        ← Practice Test 11 Module 2 questions
     └── utils/
-        └── validation.js         ← grading logic (raw string comparison)
+        ├── scoring.js            ← raw score → SAT scaled score conversion
+        └── validation.js         ← grading logic (MC + FR exact match)
 ```
+
+## Keyboard Shortcuts
+
+| Shortcut | Action |
+|----------|--------|
+| Click question number | Jump to question |
+| ← Previous / Next → | Navigate between questions |

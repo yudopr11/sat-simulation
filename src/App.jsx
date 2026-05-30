@@ -139,6 +139,7 @@ export default function App() {
           onAnswer={(i, v) => dispatch({ type: 'SET_M1_ANSWER', index: i, value: v })}
           onFreeze={handleFreezeModule1}
           devMode={devMode}
+          duration={duration}
           initialTimeLeft={calcTimeLeft(state.module1StartedAt)}
         />
       )
@@ -158,6 +159,7 @@ export default function App() {
           onAnswer={(i, v) => dispatch({ type: 'SET_M2_ANSWER', index: i, value: v })}
           onFreeze={handleFreezeModule2}
           devMode={devMode}
+          duration={duration}
           initialTimeLeft={calcTimeLeft(state.module2StartedAt)}
         />
       )

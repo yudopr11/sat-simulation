@@ -3,20 +3,19 @@ import TimerBar from './TimerBar'
 import QuestionNav from './QuestionNav'
 import QuestionRenderer from './QuestionRenderer'
 
-const FULL_DURATION = 2100 // 35 minutes in seconds
-const DEV_DURATION = 360   // 1 minute for dev/testing mode
-
 /**
  * ExamModule — the main exam screen used for both Module 1 and Module 2.
  *
  * Props:
  *   moduleNumber   — 1 or 2
- *   questions      — array of 27 question objects
- *   answers        — array of 27 answer values (null | string)
+ *   questions      — array of question objects
+ *   answers        — array of answer values (null | string)
  *   frozen         — bool; true when time has expired
  *   onAnswer(i, v) — called with question index and new answer value
  *   onFreeze()     — called when timer reaches 0
- *   devMode        — bool; if true use 60-second timer
+ *   devMode        — bool; if true use short timer
+ *   duration       — full module duration in seconds
+ *   initialTimeLeft — remaining time in seconds (for session restore)
  */
 export default function ExamModule({
   moduleNumber,
@@ -27,9 +26,9 @@ export default function ExamModule({
   onAnswer,
   onFreeze,
   devMode,
+  duration,
   initialTimeLeft,
 }) {
-  const duration = devMode ? DEV_DURATION : FULL_DURATION
   const [timeLeft, setTimeLeft] = useState(() => initialTimeLeft ?? duration)
   const [activeIndex, setActiveIndex] = useState(0)
   const [showRef, setShowRef] = useState(false)
