@@ -200,7 +200,7 @@ export const module1Questions = [
   {
     id: 13,
     type: 'fr',
-    text: '$$3x + 6 = 4y$$$$3x + 4 = y$$The solution to the given system of equations is $(x, y)$. What is the value of $y$?',
+    text: '$$3x + 6 = 4y$$$$3x + 4 = 2y$$The solution to the given system of equations is $(x, y)$. What is the value of $y$?',
     choices: null,
     answer: null,
     acceptedAnswers: ['1'],
