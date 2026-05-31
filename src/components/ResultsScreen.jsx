@@ -172,8 +172,8 @@ export default function ResultsScreen({
             <span className="text-2xl font-bold opacity-90">{pct}%</span>
           </div>
           <div className="flex justify-center gap-6 text-sm opacity-80">
-            <span>Module 1: {m1Results.filter((r) => r.status === 'correct').length}/{m1Questions.length}</span>
-            <span>Module 2: {m2Results.filter((r) => r.status === 'correct').length}/{m2Questions.length}</span>
+            <span>Module 1: {m1Results.filter((r) => r.status === 'correct').length}/{module1Questions.length}</span>
+            <span>Module 2: {m2Results.filter((r) => r.status === 'correct').length}/{module2Questions.length}</span>
           </div>
         </div>
 
